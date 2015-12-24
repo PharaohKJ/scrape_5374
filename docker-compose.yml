@@ -1,0 +1,11 @@
+nantoka:
+  build: ./docker
+  # image: debian:jessie
+  log_driver: fluentd
+  log_opt:
+    fluentd-address: localhost:24224
+    fluentd-tag:     prairiestack.docker.wee_worker
+  environment:
+    #  RACK_ENV: development
+    SHOW: 'true'
+    #  SESSION_SECRET:
