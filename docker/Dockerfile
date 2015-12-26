@@ -28,4 +28,6 @@ RUN cd casperjs && \
        chmod +x /casperjs/bin/casperjs && \
        ln -sf /casperjs/bin/casperjs /usr/local/bin/casperjs
 
+RUN apt-get install fonts-migmix -y
+
 CMD phantomjs --version && casperjs --version
