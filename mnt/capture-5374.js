@@ -10,13 +10,15 @@ casper.userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/60
 
 var fs = require('fs');
 
-// var areas = {};
+var areas = {};
 
 casper.start("http://kanazawa.5374.jp", function () {
+  this.echo('start');
+
   this.evaluate(function sendLog(log) {}, this.result.log);
 
   // Get Area Size
-  var areas = this.evaluate(function() {
+  areas = this.evaluate(function() {
     var area = [];
     $('#select_area option').each(function() {
       area.push({
@@ -26,23 +28,36 @@ casper.start("http://kanazawa.5374.jp", function () {
     });
     return area;
   });
+});
 
+var local_index = 0;
+
+casper.then(function(){
   for(var i = 0; i < areas.length; i++) {
-    areas[i]['html'] = this.evaluate(function(index) {
-      //console.log(index);
-      $('#select_area option').val(index).change();
-      var out = [];
-      $('.accordion-toggle').each( function(){
-        // console.log($(this).html());
-        out.push($(this).html());
+    casper.then(function(){
+      this.evaluate(function sendLog(log) {}, this.result.log);
+      areas[local_index]['html'] = this.evaluate(function(index) {
+        // console.log(index);
+        $('#select_area option').val(index).change();
+        var out = [];
+        $('.accordion-toggle').each( function(){
+          // console.log($(this).html());
+          out.push($(this).html());
+        });
+        return out;
+      }, areas[local_index]['area']);
+      local_index+=1;
+    });
+    casper.then(function(){
+      this.wait(1000, function() {
+        // this.echo("wait render.");
+        this.capture("/mnt/data/5374_" + local_index + ".png");
       });
-      return out;
-    }, areas[i]['area']);
-    casper.capture("/mnt/data/5374_" + i + "_1.png");
-    casper.capture("/mnt/data/5374_" + i + "_2.png");
-    casper.capture("/mnt/data/5374_" + i + "_3.png");
+    });
   }
+});
 
+casper.then(function(){
   for(var area_index = 0 ; area_index < areas.length; area_index++) {
     for(var div_index = 0; div_index < areas[area_index]['area'].length; div_index++) {
       var t = areas[area_index];
