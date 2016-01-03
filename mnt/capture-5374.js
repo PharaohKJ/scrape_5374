@@ -36,7 +36,8 @@ casper.then(function(){
   for(var i = 0; i < areas.length; i++) {
     casper.then(function(){
       this.evaluate(function sendLog(log) {}, this.result.log);
-      areas[local_index]['html'] = this.evaluate(function(index) {
+      areas[local_index]['update_at'] = Date.now();
+      areas[local_index]['html']      = this.evaluate(function(index) {
         // console.log(index);
         $('#select_area option').val(index).change();
         var out = [];
