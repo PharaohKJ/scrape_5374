@@ -28,6 +28,8 @@ casper.start("http://kanazawa.5374.jp", function () {
     });
     return area;
   });
+  this.echo('areas ->')
+  this.echo(areas.toString());
 });
 
 var local_index = 0;
