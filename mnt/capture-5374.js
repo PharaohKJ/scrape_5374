@@ -13,23 +13,25 @@ var fs = require('fs');
 var areas = {};
 
 casper.start("http://kanazawa.5374.jp", function () {
-  this.echo('start');
+  casper.wait(5000, function() {
+    this.echo('start');
 
-  this.evaluate(function sendLog(log) {}, this.result.log);
+    this.evaluate(function sendLog(log) {}, this.result.log);
 
-  // Get Area Size
-  areas = this.evaluate(function() {
-    var area = [];
-    $('#select_area option').each(function() {
-      area.push({
-        text: $(this).text(),
-        area: $(this).attr("value")
+    // Get Area Size
+    areas = this.evaluate(function() {
+      var area = [];
+      $('#select_area option').each(function() {
+        area.push({
+          text: $(this).text(),
+          area: $(this).attr("value")
+        });
       });
+      return area;
     });
-    return area;
-  });
-  this.echo('areas ->')
-  this.echo(areas.toString());
+    this.echo('areas ->')
+    this.echo(areas.length);
+  )};
 });
 
 var local_index = 0;
