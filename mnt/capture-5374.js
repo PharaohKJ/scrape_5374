@@ -64,7 +64,8 @@ casper.then(function(){
 
 casper.then(function(){
   for(var area_index = 0 ; area_index < areas.length; area_index++) {
-    for(var div_index = 0; div_index < areas[area_index]['area'].length; div_index++) {
+      for(var div_index = 0; div_index < areas[area_index]['area'].length; div_index++) {
+      fs.write("/mnt/data/save_" + area_index + ".json", JSON.stringify(areas[area_index], null, '  '), 'w');
       var t = areas[area_index];
       this.echo(t['text'] + ' : ' + t['area']);
       this.echo(areas[area_index]['html'][div_index]);
